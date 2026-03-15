@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans antialiased bg-slate-50 text-gray-900;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-800 text-white font-semibold rounded-xl
+           hover:bg-blue-900 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none
+           focus:ring-2 focus:ring-blue-600 focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-blue-800 font-semibold rounded-xl
+           border-2 border-blue-800 hover:bg-blue-50 active:scale-95 transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2;
+  }
+
+  .btn-outline-white {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-transparent text-white font-semibold rounded-xl
+           border-2 border-white hover:bg-white hover:text-blue-900 active:scale-95 transition-all duration-200;
+  }
+
+  .section-header {
+    @apply text-center mb-8 sm:mb-12;
+  }
+
+  .section-tag {
+    @apply inline-block text-sm font-semibold text-blue-700 bg-blue-50 px-4 py-1 rounded-full mb-4 uppercase tracking-wider;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold text-gray-900 leading-tight;
+  }
+
+  .section-subtitle {
+    @apply text-lg text-gray-500 mt-3 max-w-2xl mx-auto;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 overflow-hidden;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-900 placeholder-gray-400
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200;
+  }
+
+  .input-error {
+    @apply border-red-400 focus:ring-red-400;
+  }
+}

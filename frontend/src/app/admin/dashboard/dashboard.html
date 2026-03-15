@@ -1,0 +1,371 @@
+﻿<div class="min-h-screen bg-slate-100 flex flex-col">
+  <!-- Top bar -->
+  <header
+    class="bg-blue-900 text-white h-16 flex items-center justify-between px-6 shadow-lg shrink-0"
+  >
+    <div class="flex items-center gap-3">
+      <img src="assets/images/fibem_logo.jpg" alt="Logo" class="h-9 w-auto rounded-lg" />
+      <div>
+        <p class="font-bold leading-none">Dashboard Admin</p>
+        <p class="text-blue-300 text-xs mt-0.5">Mairie de Mbaling</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <a
+        routerLink="/"
+        target="_blank"
+        class="text-blue-300 hover:text-white text-sm transition flex items-center gap-1"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+        Site public
+      </a>
+      <button (click)="logout()"
+        class="bg-blue-800 hover:bg-blue-700 px-4 py-1.5 rounded-lg text-sm font-medium transition">
+        Deconnexion
+      </button>
+    </div>
+  </header>
+
+  <div class="flex-1 max-w-6xl w-full mx-auto px-4 py-8">
+    @if (globalError) {
+      <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm flex justify-between">
+        {{ globalError }}
+        <button (click)="globalError = ''" class="font-bold">x</button>
+      </div>
+    }
+
+    <div class="flex gap-2 mb-6 flex-wrap">
+      <button (click)="activeTab = 'actualites'"
+        class="px-5 py-2.5 rounded-xl font-semibold text-sm transition"
+        [class.bg-blue-800]="activeTab === 'actualites'"
+        [class.text-white]="activeTab === 'actualites'"
+        [class.bg-white]="activeTab !== 'actualites'"
+        [class.text-gray-600]="activeTab !== 'actualites'"
+        [class.shadow]="activeTab !== 'actualites'">
+        Actualites ({{ actualites.length }})
+      </button>
+      <button (click)="activeTab = 'conseillers'"
+        class="px-5 py-2.5 rounded-xl font-semibold text-sm transition"
+        [class.bg-blue-800]="activeTab === 'conseillers'"
+        [class.text-white]="activeTab === 'conseillers'"
+        [class.bg-white]="activeTab !== 'conseillers'"
+        [class.text-gray-600]="activeTab !== 'conseillers'"
+        [class.shadow]="activeTab !== 'conseillers'">
+        Conseil ({{ conseillers.length }})
+      </button>
+      <button (click)="activeTab = 'services'"
+        class="px-5 py-2.5 rounded-xl font-semibold text-sm transition"
+        [class.bg-blue-800]="activeTab === 'services'"
+        [class.text-white]="activeTab === 'services'"
+        [class.bg-white]="activeTab !== 'services'"
+        [class.text-gray-600]="activeTab !== 'services'"
+        [class.shadow]="activeTab !== 'services'">
+        Services ({{ services.length }})
+      </button>
+    </div>
+
+    @if (activeTab === 'actualites') {
+      <div class="space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-bold text-gray-900">Gestion des actualites</h2>
+          <button (click)="openCreateActu()"
+            class="bg-blue-800 text-white px-4 py-2 rounded-xl font-semibold text-sm hover:bg-blue-900 transition flex items-center gap-2">
+            <span class="text-lg leading-none">+</span> Nouvelle actualite
+          </button>
+        </div>
+        @if (showActuForm) {
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <h3 class="font-bold text-gray-900 mb-5 text-lg">
+              {{ editingActu ? "Modifier l'actualite" : 'Nouvelle actualite' }}
+            </h3>
+            @if (actuError) {
+              <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">{{ actuError }}</div>
+            }
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Titre *</label>
+                <input [(ngModel)]="actuForm.titre" type="text"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                  placeholder="Titre de l'actualite" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Categorie</label>
+                <select [(ngModel)]="actuForm.categorie"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition bg-white">
+                  @for (cat of categories; track cat) {
+                    <option [value]="cat">{{ cat }}</option>
+                  }
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Date *</label>
+                <input [(ngModel)]="actuForm.date" type="text"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                  placeholder="ex : 10 mars 2026" />
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Description *</label>
+                <textarea [(ngModel)]="actuForm.description" rows="4"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition resize-none"
+                  placeholder="Texte de l'actualite..."></textarea>
+              </div>
+            </div>
+            <div class="flex gap-3 mt-5">
+              <button (click)="saveActu()" [disabled]="actuLoading"
+                class="bg-blue-800 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:bg-blue-900 transition disabled:opacity-60">
+                {{ actuLoading ? 'Sauvegarde...' : editingActu ? 'Enregistrer' : 'Publier' }}
+              </button>
+              <button (click)="showActuForm = false"
+                class="bg-gray-100 text-gray-700 px-6 py-2.5 rounded-xl font-semibold text-sm hover:bg-gray-200 transition">
+                Annuler
+              </button>
+            </div>
+          </div>
+        }
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          @if (actualites.length === 0) {
+            <div class="text-center py-16 text-gray-400">
+              <p class="text-lg font-semibold">Aucune actualite</p>
+              <p class="text-sm mt-1">Cliquez sur "Nouvelle actualite" pour commencer</p>
+            </div>
+          } @else {
+            <table class="w-full text-sm">
+              <thead class="bg-slate-50 border-b border-gray-100">
+                <tr>
+                  <th class="text-left px-5 py-3.5 font-semibold text-gray-600">Titre</th>
+                  <th class="text-left px-5 py-3.5 font-semibold text-gray-600 hidden sm:table-cell">Categorie</th>
+                  <th class="text-left px-5 py-3.5 font-semibold text-gray-600 hidden md:table-cell">Date</th>
+                  <th class="text-right px-5 py-3.5 font-semibold text-gray-600 w-px whitespace-nowrap">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-50">
+                @for (actu of actualites; track actu.id) {
+                  <tr class="hover:bg-slate-50 transition">
+                    <td class="px-5 py-4 font-medium text-gray-900"><div class="line-clamp-2 max-w-xs">{{ actu.titre }}</div></td>
+                    <td class="px-5 py-4 hidden sm:table-cell">
+                      <span class="px-2.5 py-1 rounded-full text-xs font-semibold {{ actu.badge_class }}">{{ actu.categorie }}</span>
+                    </td>
+                    <td class="px-5 py-4 text-gray-500 hidden md:table-cell">{{ actu.date }}</td>
+                    <td class="px-5 py-4 text-right w-px whitespace-nowrap">
+                      <div class="flex items-center justify-end gap-2">
+                        <button (click)="openEditActu(actu)" class="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg text-xs font-semibold hover:bg-blue-100 transition">Modifier</button>
+                        <button (click)="deleteActu(actu.id)" class="px-3 py-1.5 bg-red-50 text-red-700 rounded-lg text-xs font-semibold hover:bg-red-100 transition">Supprimer</button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+      </div>
+    }
+
+    @if (activeTab === 'conseillers') {
+      <div class="space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-gray-900">Conseil municipal</h2>
+            <p class="text-gray-500 text-sm mt-0.5">Le Maire et ses adjoints - apparaissent sur la page La Mairie</p>
+          </div>
+          <button (click)="openCreateConse()"
+            class="bg-blue-800 text-white px-4 py-2 rounded-xl font-semibold text-sm hover:bg-blue-900 transition flex items-center gap-2">
+            <span class="text-lg leading-none">+</span> Ajouter un membre
+          </button>
+        </div>
+        @if (showConseForm) {
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <h3 class="font-bold text-gray-900 mb-5 text-lg">
+              {{ editingConse ? 'Modifier le membre' : 'Nouveau membre du conseil' }}
+            </h3>
+            @if (conseError) {
+              <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">{{ conseError }}</div>
+            }
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nom complet *</label>
+                <input [(ngModel)]="conseForm.nom" type="text"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                  placeholder="ex : Jean Dupont" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Role *</label>
+                <input [(ngModel)]="conseForm.role" type="text"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                  placeholder="ex : Maire, 1er Adjoint, 2e Adjointe..." />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Responsabilite</label>
+                <input [(ngModel)]="conseForm.responsabilite" type="text"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                  placeholder="ex : Urbanisme et travaux publics" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Ordre d'affichage</label>
+                <input [(ngModel)]="conseForm.ordre" type="number" min="1"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                  placeholder="1 = Maire (premier)" />
+              </div>
+            </div>
+            <div class="flex gap-3 mt-5">
+              <button (click)="saveConse()" [disabled]="conseLoading"
+                class="bg-blue-800 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:bg-blue-900 transition disabled:opacity-60">
+                {{ conseLoading ? 'Sauvegarde...' : editingConse ? 'Enregistrer' : 'Ajouter' }}
+              </button>
+              <button (click)="showConseForm = false"
+                class="bg-gray-100 text-gray-700 px-6 py-2.5 rounded-xl font-semibold text-sm hover:bg-gray-200 transition">
+                Annuler
+              </button>
+            </div>
+          </div>
+        }
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          @if (conseillers.length === 0) {
+            <div class="text-center py-16 text-gray-400">
+              <p class="text-lg font-semibold">Aucun membre</p>
+              <p class="text-sm mt-1">Ajoutez le Maire et ses adjoints</p>
+            </div>
+          } @else {
+            <table class="w-full text-sm">
+              <thead class="bg-slate-50 border-b border-gray-100">
+                <tr>
+                  <th class="text-left px-5 py-3.5 font-semibold text-gray-600 w-8">#</th>
+                  <th class="text-left px-5 py-3.5 font-semibold text-gray-600">Nom</th>
+                  <th class="text-left px-5 py-3.5 font-semibold text-gray-600 hidden sm:table-cell">Role</th>
+                  <th class="text-left px-5 py-3.5 font-semibold text-gray-600 hidden md:table-cell">Responsabilite</th>
+                  <th class="text-right px-5 py-3.5 font-semibold text-gray-600 w-px whitespace-nowrap">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-50">
+                @for (c of conseillers; track c.id) {
+                  <tr class="hover:bg-slate-50 transition">
+                    <td class="px-5 py-4 text-gray-400 text-xs font-mono">{{ c.ordre }}</td>
+                    <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">{{ c.nom }}</td>
+                    <td class="px-5 py-4 hidden sm:table-cell">
+                      <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">{{ c.role }}</span>
+                    </td>
+                    <td class="px-5 py-4 text-gray-500 hidden md:table-cell max-w-xs truncate">{{ c.responsabilite }}</td>
+                    <td class="px-5 py-4 text-right w-px whitespace-nowrap">
+                      <div class="flex items-center justify-end gap-2">
+                        <button (click)="openEditConse(c)" class="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg text-xs font-semibold hover:bg-blue-100 transition">Modifier</button>
+                        <button (click)="deleteConse(c.id)" class="px-3 py-1.5 bg-red-50 text-red-700 rounded-lg text-xs font-semibold hover:bg-red-100 transition">Supprimer</button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+      </div>
+    }
+
+    @if (activeTab === 'services') {
+      <div class="space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-gray-900">Services municipaux</h2>
+            <p class="text-gray-500 text-sm mt-0.5">Apparaissent sur la page Services du site public</p>
+          </div>
+          <button (click)="openCreateServ()"
+            class="bg-blue-800 text-white px-4 py-2 rounded-xl font-semibold text-sm hover:bg-blue-900 transition flex items-center gap-2">
+            <span class="text-lg leading-none">+</span> Ajouter un service
+          </button>
+        </div>
+        @if (showServForm) {
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <h3 class="font-bold text-gray-900 mb-5 text-lg">
+              {{ editingServ ? 'Modifier le service' : 'Nouveau service' }}
+            </h3>
+            @if (servError) {
+              <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">{{ servError }}</div>
+            }
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Titre *</label>
+                <input [(ngModel)]="servForm.titre" type="text"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                  placeholder="ex : Etat civil" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Couleur du theme</label>
+                <select [(ngModel)]="servForm.theme"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition bg-white">
+                  @for (theme of serviceThemes; track theme) {
+                    <option [value]="theme">{{ theme }}</option>
+                  }
+                </select>
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Description *</label>
+                <input [(ngModel)]="servForm.description" type="text"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                  placeholder="Courte description du service" />
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Details <span class="text-gray-400 font-normal">(un element par ligne)</span>
+                </label>
+                <textarea [(ngModel)]="servForm.detailsText" rows="6"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition resize-none font-mono text-sm"
+                  placeholder="Declaration de naissance&#10;Mariage civil&#10;Copies et extraits d'actes"></textarea>
+              </div>
+            </div>
+            <div class="flex gap-3 mt-5">
+              <button (click)="saveServ()" [disabled]="servLoading"
+                class="bg-blue-800 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:bg-blue-900 transition disabled:opacity-60">
+                {{ servLoading ? 'Sauvegarde...' : editingServ ? 'Enregistrer' : 'Publier' }}
+              </button>
+              <button (click)="showServForm = false"
+                class="bg-gray-100 text-gray-700 px-6 py-2.5 rounded-xl font-semibold text-sm hover:bg-gray-200 transition">
+                Annuler
+              </button>
+            </div>
+          </div>
+        }
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          @if (services.length === 0) {
+            <div class="text-center py-16 text-gray-400">
+              <p class="text-lg font-semibold">Aucun service</p>
+              <p class="text-sm mt-1">Cliquez sur "Ajouter un service" pour commencer</p>
+            </div>
+          } @else {
+            <table class="w-full text-sm">
+              <thead class="bg-slate-50 border-b border-gray-100">
+                <tr>
+                  <th class="text-left px-5 py-3.5 font-semibold text-gray-600">Titre</th>
+                  <th class="text-left px-5 py-3.5 font-semibold text-gray-600 hidden sm:table-cell">Description</th>
+                  <th class="text-left px-5 py-3.5 font-semibold text-gray-600 hidden md:table-cell">Details</th>
+                  <th class="text-right px-5 py-3.5 font-semibold text-gray-600 w-px whitespace-nowrap">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-50">
+                @for (s of services; track s.id) {
+                  <tr class="hover:bg-slate-50 transition">
+                    <td class="px-5 py-4">
+                      <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded-full {{ s.bgIcon }} border {{ s.borderColor }}"></div>
+                        <span class="font-medium text-gray-900">{{ s.titre }}</span>
+                      </div>
+                    </td>
+                    <td class="px-5 py-4 text-gray-500 hidden sm:table-cell max-w-xs truncate">{{ s.description }}</td>
+                    <td class="px-5 py-4 text-gray-400 hidden md:table-cell text-xs">{{ s.details.length }} element(s)</td>
+                    <td class="px-5 py-4 text-right w-px whitespace-nowrap">
+                      <div class="flex items-center justify-end gap-2">
+                        <button (click)="openEditServ(s)" class="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg text-xs font-semibold hover:bg-blue-100 transition">Modifier</button>
+                        <button (click)="deleteServ(s.id)" class="px-3 py-1.5 bg-red-50 text-red-700 rounded-lg text-xs font-semibold hover:bg-red-100 transition">Supprimer</button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

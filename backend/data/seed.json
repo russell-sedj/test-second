@@ -1,0 +1,207 @@
+{
+  "actualites": [
+    {
+      "id": 1,
+      "titre": "Rénovation de la place centrale - Phase 2 lancée",
+      "description": "Les travaux de rénovation de la place centrale de Mbaling entrent dans leur deuxième phase avec la création d'espaces verts et de zones piétonnes modernes. Cette phase sera terminée d'ici septembre 2026.",
+      "categorie": "Travaux",
+      "date": "5 mars 2026",
+      "badge_class": "bg-orange-100 text-orange-700",
+      "bg_class": "bg-gradient-to-br from-orange-400 to-orange-600",
+      "created_at": "2026-03-05T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "titre": "Inscriptions scolaires 2026-2027 ouvertes",
+      "description": "Les inscriptions pour l'année scolaire 2026-2027 sont désormais ouvertes. Rendez-vous en mairie muni des documents nécessaires ou inscrivez-vous en ligne sur notre portail.",
+      "categorie": "Éducation",
+      "date": "28 février 2026",
+      "badge_class": "bg-green-100 text-green-700",
+      "bg_class": "bg-gradient-to-br from-green-400 to-green-600",
+      "created_at": "2026-02-28T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "titre": "Fête de printemps - 20 & 21 avril 2026",
+      "description": "La traditionnelle fête de printemps de Mbaling aura lieu les 20 et 21 avril 2026. Concerts, animations et expositions pour toute la famille sont au programme.",
+      "categorie": "Événement",
+      "date": "15 février 2026",
+      "badge_class": "bg-purple-100 text-purple-700",
+      "bg_class": "bg-gradient-to-br from-purple-400 to-purple-600",
+      "created_at": "2026-02-15T00:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "titre": "Conseil municipal du 10 mars 2026",
+      "description": "Le prochain conseil municipal se tiendra le 10 mars 2026 à 18h30 en mairie. Les citoyens sont invités à assister à cette séance publique.",
+      "categorie": "Institution",
+      "date": "1 février 2026",
+      "badge_class": "bg-blue-100 text-blue-700",
+      "bg_class": "bg-gradient-to-br from-blue-500 to-blue-700",
+      "created_at": "2026-02-01T00:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "titre": "Plantation de 200 arbres dans la commune",
+      "description": "Dans le cadre de son plan vert, la mairie de Mbaling plante 200 arbres sur l'ensemble du territoire communal ce mois-ci. Un geste fort pour l'environnement.",
+      "categorie": "Environnement",
+      "date": "20 janvier 2026",
+      "badge_class": "bg-teal-100 text-teal-700",
+      "bg_class": "bg-gradient-to-br from-teal-400 to-teal-600",
+      "created_at": "2026-01-20T00:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "titre": "Ouverture de la nouvelle médiathèque",
+      "description": "La nouvelle médiathèque municipale ouvrira ses portes le 1er avril 2026. Un espace moderne de 800 m² avec plus de 25 000 ouvrages, espace numérique et salle de conférence.",
+      "categorie": "Événement",
+      "date": "10 janvier 2026",
+      "badge_class": "bg-purple-100 text-purple-700",
+      "bg_class": "bg-gradient-to-br from-indigo-400 to-indigo-600",
+      "created_at": "2026-01-10T00:00:00.000Z"
+    }
+  ],
+  "documents": [],
+  "conseillers": [
+    {
+      "id": 1,
+      "nom": "Pape Da",
+      "role": "Maire",
+      "responsabilite": "Administration générale, finances, sécurité",
+      "ordre": 1
+    },
+    {
+      "id": 2,
+      "nom": "Geralt de Riv",
+      "role": "1er Adjoint",
+      "responsabilite": "Urbanisme & travaux publics",
+      "ordre": 2
+    },
+    {
+      "id": 3,
+      "nom": "Yennefer",
+      "role": "2e Adjointe",
+      "responsabilite": "Éducation & jeunesse",
+      "ordre": 3
+    },
+    {
+      "id": 4,
+      "nom": "Bojack Horseman",
+      "role": "3e Adjoint",
+      "responsabilite": "Culture, sport & associations",
+      "ordre": 4
+    },
+    {
+      "id": 5,
+      "nom": "Rick Garfield",
+      "role": "4e Adjoint",
+      "responsabilite": "Solidarités & santé",
+      "ordre": 5
+    },
+    {
+      "id": 6,
+      "nom": "Jeanne d'Arc",
+      "role": "5e Adjointe",
+      "responsabilite": "Environnement & développement durable",
+      "ordre": 6
+    }
+  ],
+  "services": [
+    {
+      "id": 1,
+      "titre": "État civil",
+      "description": "Toutes les démarches liées à l'état civil de vos proches et de vous-même.",
+      "details": [
+        "Déclaration de naissance",
+        "Mariage civil",
+        "Déclaration de décès",
+        "Copies et extraits d'actes",
+        "Livret de famille",
+        "Reconnaissance anticipée"
+      ],
+      "bgIcon": "bg-blue-100",
+      "iconColor": "text-blue-700",
+      "borderColor": "border-blue-200"
+    },
+    {
+      "id": 2,
+      "titre": "Urbanisme",
+      "description": "Toutes les autorisations et informations relatives à l'urbanisme et aux travaux.",
+      "details": [
+        "Permis de construire",
+        "Permis de démolir",
+        "Déclaration préalable de travaux",
+        "Certificat d'urbanisme",
+        "Plan local d'urbanisme (PLU)",
+        "Alignement voirie"
+      ],
+      "bgIcon": "bg-amber-100",
+      "iconColor": "text-amber-700",
+      "borderColor": "border-amber-200"
+    },
+    {
+      "id": 3,
+      "titre": "Éducation",
+      "description": "Inscriptions scolaires et services périscolaires pour votre enfant.",
+      "details": [
+        "Inscription en école maternelle",
+        "Inscription en école élémentaire",
+        "Restaurant scolaire (cantine)",
+        "Garderie périscolaire",
+        "Activités extra-scolaires",
+        "Transport scolaire"
+      ],
+      "bgIcon": "bg-green-100",
+      "iconColor": "text-green-700",
+      "borderColor": "border-green-200"
+    },
+    {
+      "id": 4,
+      "titre": "Culture",
+      "description": "Médiathèque, patrimoine et vie culturelle au service des habitants.",
+      "details": [
+        "Médiathèque municipale",
+        "Expositions et galeries",
+        "Concerts et spectacles",
+        "Patrimoine local",
+        "Soutien aux associations culturelles",
+        "École de musique municipale"
+      ],
+      "bgIcon": "bg-purple-100",
+      "iconColor": "text-purple-700",
+      "borderColor": "border-purple-200"
+    },
+    {
+      "id": 5,
+      "titre": "Sport",
+      "description": "Installations sportives et associations pour une pratique pour tous.",
+      "details": [
+        "Stade municipal",
+        "Salle polyvalente",
+        "Piscine municipale",
+        "Gymnase",
+        "Terrains de tennis",
+        "Soutien aux clubs sportifs"
+      ],
+      "bgIcon": "bg-red-100",
+      "iconColor": "text-red-700",
+      "borderColor": "border-red-200"
+    },
+    {
+      "id": 6,
+      "titre": "Environnement",
+      "description": "Actions municipales pour un cadre de vie durable et agréable.",
+      "details": [
+        "Collecte des déchets",
+        "Déchetterie municipale",
+        "Espaces verts et parcs",
+        "Développement durable",
+        "Qualité de l'eau",
+        "Plantations et fleurissement"
+      ],
+      "bgIcon": "bg-teal-100",
+      "iconColor": "text-teal-700",
+      "borderColor": "border-teal-200"
+    }
+  ]
+}

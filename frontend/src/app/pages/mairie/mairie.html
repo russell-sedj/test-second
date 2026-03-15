@@ -1,0 +1,217 @@
+<!-- Page Hero -->
+<section class="bg-gradient-to-br from-blue-900 to-blue-800 text-white py-16 lg:py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav class="flex items-center gap-2 text-blue-300 text-sm mb-6" aria-label="Fil d'Ariane">
+      <a routerLink="/" class="hover:text-white transition-colors">Accueil</a>
+      <span aria-hidden="true">›</span>
+      <span class="text-white font-medium">La Mairie</span>
+    </nav>
+    <h1 class="text-4xl lg:text-5xl font-bold mb-4" data-aos="fade-up">La Mairie de Mbaling</h1>
+    <p class="text-blue-200 text-xl max-w-2xl" data-aos="fade-up" data-aos-delay="100">
+      Découvrez votre municipalité, son histoire, son équipe élue et son organisation
+      administrative.
+    </p>
+  </div>
+</section>
+
+<!-- Présentation de la ville -->
+<section class="py-12 sm:py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+      <div data-aos="fade-right">
+        <span class="section-tag">Notre commune</span>
+        <h2 class="section-title mt-2 mb-6">Mbaling, une commune dynamique et accueillante</h2>
+        <div class="space-y-4 text-gray-600 leading-relaxed">
+          <p>
+            Fondée en 1969, la commune de Mbaling est une ville à taille humaine qui allie la
+            qualité de vie à la richesse de son patrimoine culturel et naturel. Située au cœur du
+            Sénégal, elle accueille aujourd'hui plus de 12 500 habitants.
+          </p>
+          <p>
+            La municipalité œuvre chaque jour pour offrir à ses habitants des services de qualité,
+            des équipements modernes et un cadre de vie agréable. Notre commune est engagée dans le
+            développement durable et l'amélioration continue du service public.
+          </p>
+          <p>
+            Fort de son tissu associatif dense, Mbaling propose de nombreuses activités culturelles,
+            sportives et de loisirs pour tous les âges.
+          </p>
+        </div>
+      </div>
+
+      <!-- Chiffres clés -->
+      <div class="grid grid-cols-2 gap-5" data-aos="fade-left">
+        @for (chiffre of chiffres; track chiffre.label) {
+          <div
+            class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 text-center border border-blue-100"
+          >
+            <p class="text-3xl font-bold text-blue-800 mb-1">{{ chiffre.value }}</p>
+            <p class="text-gray-600 text-sm font-medium">{{ chiffre.label }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mot du Maire -->
+<section class="py-12 sm:py-20 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="section-header" data-aos="fade-up">
+      <span class="section-tag">Mot du Maire</span>
+      <h2 class="section-title">Le message du Maire</h2>
+    </div>
+
+    <div class="max-w-5xl mx-auto">
+      <div
+        class="bg-white rounded-3xl shadow-card overflow-hidden"
+        data-aos="fade-up"
+        data-aos-delay="100"
+      >
+        <div class="grid grid-cols-1 md:grid-cols-3">
+          <!-- Photo placeholder -->
+          <div
+            class="bg-gradient-to-br from-blue-700 to-blue-900 flex flex-col items-center justify-center p-6 sm:p-10 text-white text-center"
+          >
+            <div
+              class="w-28 h-28 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-4 border-4 border-white border-opacity-30"
+            >
+              <svg
+                class="w-14 h-14 text-white opacity-70"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"
+                />
+              </svg>
+            </div>
+            <h3 class="font-bold text-xl">{{ maire?.nom }}</h3>
+            <p class="text-blue-200 text-sm mt-1">{{ maire?.role }} de Mbaling</p>
+            <p class="text-blue-300 text-xs mt-1">Depuis 2020</p>
+          </div>
+
+          <!-- Message -->
+          <div class="md:col-span-2 p-6 sm:p-8 lg:p-10">
+            <div class="text-5xl text-blue-200 font-serif leading-none mb-4" aria-hidden="true">
+              "
+            </div>
+            <div class="space-y-4 text-gray-600 leading-relaxed">
+              <p>Chers citoyens</p>
+              <p>
+                C'est avec fierté et engagement que je vous accueille sur le site officiel de notre
+                belle commune. Mbaling est une ville vivante, portée par l'énergie de ses habitants
+                et la richesse de ses associations.
+              </p>
+              <p>
+                Mon équipe et moi travaillons chaque jour pour améliorer votre quotidien, moderniser
+                nos services publics et préparer l'avenir de notre commune avec vous.
+              </p>
+              <p>
+                Ce site est votre espace de proximité avec la mairie. N'hésitez pas à nous contacter
+                pour toute question.
+              </p>
+            </div>
+            <p class="mt-6 font-bold text-gray-900">{{ maire?.nom }}</p>
+            <p class="text-blue-700 text-sm font-medium">{{ maire?.role }} de Mbaling</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Conseil Municipal -->
+<section class="py-12 sm:py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="section-header" data-aos="fade-up">
+      <span class="section-tag">Équipe municipale</span>
+      <h2 class="section-title">Le conseil municipal</h2>
+      <p class="section-subtitle">
+        Élus par les citoyens, ils œuvrent pour le développement et le bien-être de la commune.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (conseiller of conseillers; track conseiller.nom; let i = $index) {
+        <div
+          class="card p-6 group text-center"
+          data-aos="fade-up"
+          [attr.data-aos-delay]="(i % 3) * 80"
+        >
+          <div
+            class="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-105 transition-transform duration-300"
+          >
+            <svg
+              class="w-8 h-8 text-white"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"
+              />
+            </svg>
+          </div>
+          <h3 class="font-bold text-gray-900 text-lg">{{ conseiller.nom }}</h3>
+          <p class="text-blue-700 font-semibold text-sm mt-1 mb-2">{{ conseiller.role }}</p>
+          <p class="text-gray-500 text-sm leading-relaxed">{{ conseiller.responsabilite }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Missions de la mairie -->
+<section class="py-12 sm:py-20 bg-gradient-to-br from-blue-900 to-blue-800 text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="section-header" data-aos="fade-up">
+      <span
+        class="inline-block text-sm font-semibold text-blue-300 bg-blue-800 px-4 py-1 rounded-full mb-4 uppercase tracking-wider"
+        >Nos missions</span
+      >
+      <h2 class="text-3xl md:text-4xl font-bold text-white">Ce que fait votre mairie</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      @for (
+        mission of [
+          {
+            titre: 'Services publics',
+            desc: "Garantir l'accès aux services essentiels pour tous les habitants.",
+          },
+          {
+            titre: 'Urbanisme & habitat',
+            desc: 'Planifier le développement harmonieux du territoire communal.',
+          },
+          {
+            titre: 'Éducation',
+            desc: 'Gérer les écoles publiques et les activités périscolaires.',
+          },
+          {
+            titre: 'Culture & sport',
+            desc: 'Soutenir les associations et organiser des événements locaux.',
+          },
+          {
+            titre: 'Voirie & espaces verts',
+            desc: 'Entretenir les routes, trottoirs et les espaces naturels.',
+          },
+          { titre: 'Action sociale', desc: 'Accompagner les habitants en situation de fragilité.' },
+        ];
+        track mission.titre;
+        let i = $index
+      ) {
+        <div
+          class="bg-blue-800 bg-opacity-50 border border-blue-700 rounded-2xl p-6"
+          data-aos="fade-up"
+          [attr.data-aos-delay]="(i % 3) * 80"
+        >
+          <div class="w-8 h-1 bg-blue-400 rounded-full mb-4"></div>
+          <h3 class="font-bold text-white text-lg mb-2">{{ mission.titre }}</h3>
+          <p class="text-blue-200 text-sm leading-relaxed">{{ mission.desc }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>

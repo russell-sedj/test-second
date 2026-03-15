@@ -1,0 +1,167 @@
+<header
+  class="sticky top-0 z-50 transition-all duration-300 bg-white shadow-md"
+  [class.shadow-lg]="scrolled"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 lg:h-20">
+      <!-- Logo & Brand -->
+      <a
+        routerLink="/"
+        class="flex items-center gap-3 group shrink-0"
+        aria-label="Accueil - Mairie de Mbaling"
+      >
+        <img
+          src="assets/images/fibem_logo.jpg"
+          alt="Logo Mairie de Mbaling"
+          class="h-10 lg:h-12 w-auto object-contain rounded-lg"
+        />
+        <div class="leading-tight">
+          <p class="text-xs font-medium text-blue-600 uppercase tracking-widest">Mairie de</p>
+          <p
+            class="text-xl lg:text-2xl font-bold text-blue-900 group-hover:text-blue-700 transition-colors"
+          >
+            Mbaling
+          </p>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex items-center gap-1" aria-label="Navigation principale">
+        <a
+          routerLink="/"
+          routerLinkActive="!text-blue-700 !bg-blue-50 font-semibold"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="px-4 py-2 rounded-xl font-medium text-gray-700 hover:text-blue-700 hover:bg-blue-50 transition-all duration-200 text-sm"
+          >Accueil</a
+        >
+        <a
+          routerLink="/mairie"
+          routerLinkActive="!text-blue-700 !bg-blue-50 font-semibold"
+          class="px-4 py-2 rounded-xl font-medium text-gray-700 hover:text-blue-700 hover:bg-blue-50 transition-all duration-200 text-sm"
+          >La Mairie</a
+        >
+        <a
+          routerLink="/services"
+          routerLinkActive="!text-blue-700 !bg-blue-50 font-semibold"
+          class="px-4 py-2 rounded-xl font-medium text-gray-700 hover:text-blue-700 hover:bg-blue-50 transition-all duration-200 text-sm"
+          >Services</a
+        >
+        <a
+          routerLink="/actualites"
+          routerLinkActive="!text-blue-700 !bg-blue-50 font-semibold"
+          class="px-4 py-2 rounded-xl font-medium text-gray-700 hover:text-blue-700 hover:bg-blue-50 transition-all duration-200 text-sm"
+          >Actualités</a
+        >
+        <a routerLink="/contact" class="ml-2 btn-primary text-sm px-5 py-2">
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+            />
+          </svg>
+          Nous contacter
+        </a>
+      </nav>
+
+      <!-- Mobile Hamburger -->
+      <button
+        (click)="toggleMenu()"
+        class="lg:hidden p-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors"
+        [attr.aria-expanded]="menuOpen"
+        aria-label="Ouvrir le menu de navigation"
+      >
+        @if (!menuOpen) {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        } @else {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        }
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    @if (menuOpen) {
+      <div class="lg:hidden border-t border-gray-100 py-3 pb-4">
+        <nav class="flex flex-col gap-1" aria-label="Navigation mobile">
+          <a
+            routerLink="/"
+            (click)="closeMenu()"
+            routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-4 py-3 rounded-xl font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+          >
+            Accueil
+          </a>
+          <a
+            routerLink="/mairie"
+            (click)="closeMenu()"
+            routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
+            class="px-4 py-3 rounded-xl font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+          >
+            La Mairie
+          </a>
+          <a
+            routerLink="/services"
+            (click)="closeMenu()"
+            routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
+            class="px-4 py-3 rounded-xl font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+          >
+            Services
+          </a>
+          <a
+            routerLink="/actualites"
+            (click)="closeMenu()"
+            routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
+            class="px-4 py-3 rounded-xl font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+          >
+            Actualités
+          </a>
+          <div class="px-1 mt-2">
+            <a
+              routerLink="/contact"
+              (click)="closeMenu()"
+              class="btn-primary w-full justify-center"
+            >
+              Nous contacter
+            </a>
+          </div>
+        </nav>
+      </div>
+    }
+  </div>
+</header>
