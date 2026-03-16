@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 22.22.1
+          node-version: 18
 
       - name: Install dependencies
         run: |
@@ -35,5 +35,5 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: frontend/dist/
+          local-dir: frontend/dist/frontend/browser/
           server-dir: public_html/
