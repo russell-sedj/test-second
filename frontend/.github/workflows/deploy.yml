@@ -7,6 +7,7 @@ on:
 
 jobs:
   build-and-deploy:
+
     runs-on: ubuntu-latest
 
     steps:
@@ -20,14 +21,10 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: |
-          cd frontend
-          npm install
+        run: npm install
 
-      - name: Build Angular
-        run: |
-          cd frontend
-          npm run build -- --configuration production
+      - name: Build Angular project
+        run: npm run build -- --configuration production
 
       - name: Deploy to Hostinger
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
@@ -35,5 +32,5 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: frontend/dist/
+          local-dir: dist/
           server-dir: public_html/
