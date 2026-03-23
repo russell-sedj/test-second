@@ -22,14 +22,12 @@ function read() {
   var data = JSON.parse(fs.readFileSync(dbFile, "utf8"));
   // Si une collection est vide dans db.json, on la réinitialise depuis le seed
   var changed = false;
-  ["actualites", "documents", "conseillers", "services"].forEach(
-    function (key) {
-      if (!data[key] || data[key].length === 0) {
-        data[key] = seed[key] || [];
-        changed = true;
-      }
-    },
-  );
+  ["actualites", "conseillers", "services"].forEach(function (key) {
+    if (!data[key] || data[key].length === 0) {
+      data[key] = seed[key] || [];
+      changed = true;
+    }
+  });
   if (changed) {
     fs.writeFileSync(dbFile, JSON.stringify(data, null, 2), "utf8");
   }
