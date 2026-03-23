@@ -22,14 +22,10 @@ app.use(
 );
 app.use(express.json());
 
-// Static file serving for uploaded documents
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
-
 // Routes
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/actualites", require("./routes/actualites"));
 app.use("/api/contact", require("./routes/contact"));
-app.use("/api/documents", require("./routes/documents"));
 app.use("/api/conseillers", require("./routes/conseillers"));
 app.use("/api/services", require("./routes/services"));
 
