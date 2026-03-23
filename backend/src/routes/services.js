@@ -1,96 +1,120 @@
-"use strict";
 const express = require("express");
-const database = require("../db");
+const pool = require("../mysql");
 const auth = require("../middleware/auth");
 
 const router = express.Router();
 
-// GET all — public
-router.get("/", (_req, res) => {
-  const db = database.read();
-  res.json((db.services || []).slice().sort((a, b) => a.id - b.id));
+function parseDetails(row) {
+  return {
+    ...row,
+    details:
+      typeof row.details === "string" ? JSON.parse(row.details) : row.details,
+  };
+}
+
+router.get("/", async (_req, res) => {
+  try {
+    const [rows] = await pool.query("SELECT * FROM services ORDER BY id ASC");
+    res.json(rows.map(parseDetails));
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
 });
 
-// POST — admin only
-router.post("/", auth, (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { titre, description, details, bgIcon, iconColor, borderColor } =
     req.body;
+
   if (!titre || !description) {
     return res
       .status(400)
-      .json({ message: "Titre et description sont obligatoires" });
+      .json({ message: "Titre et description obligatoires" });
   }
-  const db = database.read();
-  if (!db.services) db.services = [];
-  const item = {
-    id: database.nextId(db.services),
-    titre: String(titre).trim().slice(0, 100),
-    description: String(description).trim().slice(0, 500),
-    details: Array.isArray(details)
+
+  try {
+    const detailsArray = Array.isArray(details)
       ? details
-          .map((d) => String(d).trim())
-          .filter(Boolean)
-          .slice(0, 20)
-      : String(details || "")
-          .split("\n")
-          .map((d) => d.trim())
-          .filter(Boolean)
-          .slice(0, 20),
-    bgIcon: String(bgIcon || "bg-blue-100"),
-    iconColor: String(iconColor || "text-blue-700"),
-    borderColor: String(borderColor || "border-blue-200"),
-  };
-  db.services.push(item);
-  database.write(db);
-  res.status(201).json(item);
+      : (details || "").split("\n");
+
+    const [result] = await pool.query(
+      "INSERT INTO services (titre, description, details, bgIcon, iconColor, borderColor) VALUES (?, ?, ?, ?, ?, ?)",
+      [
+        titre.trim().slice(0, 100),
+        description.trim().slice(0, 500),
+        JSON.stringify(detailsArray),
+        bgIcon || "bg-blue-100",
+        iconColor || "text-blue-700",
+        borderColor || "border-blue-200",
+      ],
+    );
+
+    const [rows] = await pool.query("SELECT * FROM services WHERE id = ?", [
+      result.insertId,
+    ]);
+    res.status(201).json(parseDetails(rows[0]));
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
 });
 
-// PUT — admin only
-router.put("/:id", auth, (req, res) => {
-  const id = parseInt(req.params.id);
-  const db = database.read();
-  const idx = (db.services || []).findIndex((s) => s.id === id);
-  if (idx === -1)
-    return res.status(404).json({ message: "Service introuvable" });
+router.put("/:id", auth, async (req, res) => {
+  const id = Number(req.params.id);
   const { titre, description, details, bgIcon, iconColor, borderColor } =
     req.body;
+
   if (!titre || !description) {
     return res
       .status(400)
-      .json({ message: "Titre et description sont obligatoires" });
+      .json({ message: "Titre et description obligatoires" });
   }
-  db.services[idx] = {
-    ...db.services[idx],
-    titre: String(titre).trim().slice(0, 100),
-    description: String(description).trim().slice(0, 500),
-    details: Array.isArray(details)
+
+  try {
+    const detailsArray = Array.isArray(details)
       ? details
-          .map((d) => String(d).trim())
-          .filter(Boolean)
-          .slice(0, 20)
-      : String(details || "")
-          .split("\n")
-          .map((d) => d.trim())
-          .filter(Boolean)
-          .slice(0, 20),
-    bgIcon: String(bgIcon || "bg-blue-100"),
-    iconColor: String(iconColor || "text-blue-700"),
-    borderColor: String(borderColor || "border-blue-200"),
-  };
-  database.write(db);
-  res.json(db.services[idx]);
+      : (details || "").split("\n");
+
+    const [result] = await pool.query(
+      "UPDATE services SET titre = ?, description = ?, details = ?, bgIcon = ?, iconColor = ?, borderColor = ? WHERE id = ?",
+      [
+        titre.trim().slice(0, 100),
+        description.trim().slice(0, 500),
+        JSON.stringify(detailsArray),
+        bgIcon || "bg-blue-100",
+        iconColor || "text-blue-700",
+        borderColor || "border-blue-200",
+        id,
+      ],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Service introuvable" });
+    }
+
+    const [rows] = await pool.query("SELECT * FROM services WHERE id = ?", [
+      id,
+    ]);
+    res.json(parseDetails(rows[0]));
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
 });
 
-// DELETE — admin only
-router.delete("/:id", auth, (req, res) => {
-  const id = parseInt(req.params.id);
-  const db = database.read();
-  const idx = (db.services || []).findIndex((s) => s.id === id);
-  if (idx === -1)
-    return res.status(404).json({ message: "Service introuvable" });
-  db.services.splice(idx, 1);
-  database.write(db);
-  res.json({ message: "Service supprimé" });
+router.delete("/:id", auth, async (req, res) => {
+  const id = Number(req.params.id);
+
+  try {
+    const [result] = await pool.query("DELETE FROM services WHERE id = ?", [
+      id,
+    ]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Service introuvable" });
+    }
+
+    res.json({ message: "Service supprimé" });
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
 });
 
 module.exports = router;

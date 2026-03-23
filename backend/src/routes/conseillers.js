@@ -1,72 +1,96 @@
-"use strict";
 const express = require("express");
-const database = require("../db");
+const pool = require("../mysql");
 const auth = require("../middleware/auth");
 
 const router = express.Router();
 
-// GET all — public (triés par ordre)
-router.get("/", (_req, res) => {
-  const db = database.read();
-  res.json((db.conseillers || []).slice().sort((a, b) => a.ordre - b.ordre));
-});
-
-// POST — admin only
-router.post("/", auth, (req, res) => {
-  const { nom, role, responsabilite, ordre } = req.body;
-  if (!nom || !role) {
-    return res.status(400).json({ message: "Nom et rôle sont obligatoires" });
+router.get("/", async (_req, res) => {
+  try {
+    const [rows] = await pool.query(
+      "SELECT * FROM conseillers ORDER BY ordre ASC",
+    );
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
   }
-  const db = database.read();
-  if (!db.conseillers) db.conseillers = [];
-  const item = {
-    id: database.nextId(db.conseillers),
-    nom: String(nom).trim().slice(0, 100),
-    role: String(role).trim().slice(0, 100),
-    responsabilite: String(responsabilite || "")
-      .trim()
-      .slice(0, 200),
-    ordre: parseInt(ordre) || db.conseillers.length + 1,
-  };
-  db.conseillers.push(item);
-  database.write(db);
-  res.status(201).json(item);
 });
 
-// PUT — admin only
-router.put("/:id", auth, (req, res) => {
-  const id = parseInt(req.params.id);
-  const db = database.read();
-  const idx = (db.conseillers || []).findIndex((c) => c.id === id);
-  if (idx === -1)
-    return res.status(404).json({ message: "Conseiller introuvable" });
+router.post("/", auth, async (req, res) => {
   const { nom, role, responsabilite, ordre } = req.body;
+
   if (!nom || !role) {
-    return res.status(400).json({ message: "Nom et rôle sont obligatoires" });
+    return res.status(400).json({ message: "Nom et rôle obligatoires" });
   }
-  db.conseillers[idx] = {
-    ...db.conseillers[idx],
-    nom: String(nom).trim().slice(0, 100),
-    role: String(role).trim().slice(0, 100),
-    responsabilite: String(responsabilite || "")
-      .trim()
-      .slice(0, 200),
-    ordre: parseInt(ordre) || db.conseillers[idx].ordre,
-  };
-  database.write(db);
-  res.json(db.conseillers[idx]);
+
+  try {
+    const [result] = await pool.query(
+      "INSERT INTO conseillers (nom, role, responsabilite, ordre) VALUES (?, ?, ?, ?)",
+      [
+        nom.trim().slice(0, 100),
+        role.trim().slice(0, 100),
+        responsabilite || "",
+        ordre || 999,
+      ],
+    );
+
+    const [rows] = await pool.query("SELECT * FROM conseillers WHERE id = ?", [
+      result.insertId,
+    ]);
+    res.status(201).json(rows[0]);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
 });
 
-// DELETE — admin only
-router.delete("/:id", auth, (req, res) => {
-  const id = parseInt(req.params.id);
-  const db = database.read();
-  const idx = (db.conseillers || []).findIndex((c) => c.id === id);
-  if (idx === -1)
-    return res.status(404).json({ message: "Conseiller introuvable" });
-  db.conseillers.splice(idx, 1);
-  database.write(db);
-  res.json({ message: "Conseiller supprimé" });
+router.put("/:id", auth, async (req, res) => {
+  const id = Number(req.params.id);
+  const { nom, role, responsabilite, ordre } = req.body;
+
+  if (!nom || !role) {
+    return res.status(400).json({ message: "Nom et rôle obligatoires" });
+  }
+
+  try {
+    const [result] = await pool.query(
+      "UPDATE conseillers SET nom = ?, role = ?, responsabilite = ?, ordre = ? WHERE id = ?",
+      [
+        nom.trim().slice(0, 100),
+        role.trim().slice(0, 100),
+        responsabilite || "",
+        ordre || 999,
+        id,
+      ],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Conseiller introuvable" });
+    }
+
+    const [rows] = await pool.query("SELECT * FROM conseillers WHERE id = ?", [
+      id,
+    ]);
+    res.json(rows[0]);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
+router.delete("/:id", auth, async (req, res) => {
+  const id = Number(req.params.id);
+
+  try {
+    const [result] = await pool.query("DELETE FROM conseillers WHERE id = ?", [
+      id,
+    ]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Conseiller introuvable" });
+    }
+
+    res.json({ message: "Conseiller supprimé" });
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
 });
 
 module.exports = router;
