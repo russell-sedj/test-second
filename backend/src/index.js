@@ -8,10 +8,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Hash admin password once on startup (never stored on disk)
-app.locals.adminPasswordHash = bcrypt.hashSync(
-  process.env.ADMIN_PASSWORD || "admin123",
-  10,
-);
+app.locals.adminPasswordHash = bcrypt.hashSync(process.env.ADMIN_PASSWORD, 10);
 
 // Middleware
 app.use(
