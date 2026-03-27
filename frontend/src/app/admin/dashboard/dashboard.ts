@@ -2,7 +2,7 @@
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { ApiService, ActualiteRaw, Conseiller, Service } from '../../services/api.service';
+import { ApiService, ActualiteRaw, Conseiller, Service, DocumentApi } from '../../services/api.service';
 
 const CATEGORY_STYLES: Record<string, { badge: string; bg: string }> = {
   'Travaux':      { badge: 'bg-orange-100 text-orange-700', bg: 'bg-gradient-to-br from-orange-400 to-orange-600' },
@@ -29,7 +29,7 @@ const SERVICE_THEMES: Record<string, { bgIcon: string; iconColor: string; border
   styles: [],
 })
 export class AdminDashboard implements OnInit {
-  activeTab: 'actualites' | 'conseillers' | 'services' = 'actualites';
+  activeTab: 'actualites' | 'conseillers' | 'services' | 'documents' = 'actualites';
   categories = Object.keys(CATEGORY_STYLES);
   serviceThemes = Object.keys(SERVICE_THEMES);
 
@@ -56,6 +56,9 @@ export class AdminDashboard implements OnInit {
 
   globalError = '';
 
+  documents: DocumentApi[] = [];
+  docError = '';
+
   constructor(
     private auth: AuthService,
     private api: ApiService,
@@ -67,6 +70,7 @@ export class AdminDashboard implements OnInit {
     this.loadActualites();
     this.loadConseillers();
     this.loadServices();
+    this.loadDocuments();
   }
 
   logout() {
@@ -213,6 +217,35 @@ export class AdminDashboard implements OnInit {
     this.api.deleteService(id).subscribe({
       next: () => this.loadServices(),
       error: () => { this.globalError = 'Erreur lors de la suppression'; this.cdr.detectChanges(); },
+    });
+  }
+
+  loadDocuments() {
+    this.api.getDocumentsAdmin().subscribe({
+      next: (data) => { this.documents = data; this.cdr.detectChanges(); },
+      error: () => { this.globalError = 'Impossible de charger les documents'; this.cdr.detectChanges(); },
+    });
+  }
+
+  updateDocStatus(id: number, statut: DocumentApi['statut']) {
+    this.api.updateDocumentStatus(id, statut).subscribe({
+      next: () => this.loadDocuments(),
+      error: () => { this.globalError = 'Erreur lors de la mise a jour du statut'; this.cdr.detectChanges(); },
+    });
+  }
+
+  downloadDoc(doc: DocumentApi) {
+    this.api.downloadDocument(doc.id).subscribe({
+      next: (res) => {
+        const blob = res.body as Blob;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = doc.original_name || 'document';
+        a.click();
+        URL.revokeObjectURL(url);
+      },
+      error: () => { this.globalError = 'Erreur lors du telechargement'; this.cdr.detectChanges(); },
     });
   }
 }
