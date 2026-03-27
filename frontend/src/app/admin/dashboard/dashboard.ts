@@ -248,4 +248,16 @@ export class AdminDashboard implements OnInit {
       error: () => { this.globalError = 'Erreur lors du telechargement'; this.cdr.detectChanges(); },
     });
   }
+
+  formatDocumentDate(value: string) {
+    if (!value) return '-';
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return value;
+
+    return new Intl.DateTimeFormat('fr-SN', {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+      timeZone: 'Africa/Dakar',
+    }).format(d);
+  }
 }

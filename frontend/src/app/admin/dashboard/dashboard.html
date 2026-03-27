@@ -396,6 +396,7 @@
                   <th class="text-left px-5 py-3.5 font-semibold text-gray-600">Citoyen</th>
                   <th class="text-left px-5 py-3.5 font-semibold text-gray-600 hidden md:table-cell">Type</th>
                   <th class="text-left px-5 py-3.5 font-semibold text-gray-600 hidden lg:table-cell">Objet</th>
+                  <th class="text-left px-5 py-3.5 font-semibold text-gray-600 hidden xl:table-cell">Recu le</th>
                   <th class="text-left px-5 py-3.5 font-semibold text-gray-600">Statut</th>
                   <th class="text-right px-5 py-3.5 font-semibold text-gray-600">Actions</th>
                 </tr>
@@ -409,6 +410,9 @@
                     </td>
                     <td class="px-5 py-4 hidden md:table-cell">{{ doc.type_demande }}</td>
                     <td class="px-5 py-4 hidden lg:table-cell max-w-xs truncate">{{ doc.objet }}</td>
+                    <td class="px-5 py-4 hidden xl:table-cell text-gray-500 whitespace-nowrap">
+                      {{ formatDocumentDate(doc.created_at) }}
+                    </td>
                     <td class="px-5 py-4">
                       <select
                         [ngModel]="doc.statut"
