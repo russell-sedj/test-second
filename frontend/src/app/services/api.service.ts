@@ -27,10 +27,17 @@ export interface ActualiteRaw {
 export interface DocumentApi {
   id: number;
   nom: string;
-  description: string;
-  categorie: string;
+  prenom: string;
+  email: string;
+  telephone: string;
+  type_demande: string;
+  objet: string;
+  message: string;
   filename: string;
+  original_name: string;
+  mime_type: string;
   size: number;
+  statut: 'nouveau' | 'en_cours' | 'traite' | 'rejete';
   created_at: string;
 }
 
