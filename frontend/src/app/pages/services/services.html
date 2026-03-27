@@ -186,10 +186,11 @@
 
           <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex justify-end">
             <a
-              routerLink="/contact"
+              [routerLink]="['/demarches']"
+              [queryParams]="{ typeDemande: service.titre }"
               class="text-sm font-semibold text-blue-700 hover:text-blue-900 flex items-center gap-1.5 transition-colors"
             >
-              Prendre contact
+              Demander ce service
               <svg
                 class="w-4 h-4"
                 fill="none"
