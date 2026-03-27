@@ -122,6 +122,35 @@ export class ApiService {
     return `${this.base}/documents/${id}/download`;
   }
 
+  submitDocument(formData: FormData) {
+  return this.http.post<{ message: string; document: DocumentApi }>(
+    `${this.base}/documents/public-upload`,
+    formData,
+  );
+}
+
+getDocumentsAdmin() {
+  return this.http.get<DocumentApi[]>(`${this.base}/documents`, {
+    headers: this.authHeaders,
+  });
+}
+
+updateDocumentStatus(id: number, statut: DocumentApi['statut']) {
+  return this.http.patch<DocumentApi>(
+    `${this.base}/documents/${id}/status`,
+    { statut },
+    { headers: this.authHeaders },
+  );
+}
+
+downloadDocument(id: number) {
+  return this.http.get(`${this.base}/documents/${id}/download`, {
+    headers: this.authHeaders,
+    observe: 'response',
+    responseType: 'blob',
+  });
+}
+
   // -- Conseillers --
   getConseillers() {
     return this.http.get<Conseiller[]>(`${this.base}/conseillers`);
