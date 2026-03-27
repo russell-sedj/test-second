@@ -25,6 +25,7 @@ app.use("/api/actualites", require("./routes/actualites"));
 app.use("/api/contact", require("./routes/contact"));
 app.use("/api/conseillers", require("./routes/conseillers"));
 app.use("/api/services", require("./routes/services"));
+app.use("/api/documents", require("./routes/documents"));
 
 app.get("/api/health", (_req, res) =>
   res.json({ status: "ok", service: "Mairie de Mbaling API" }),
